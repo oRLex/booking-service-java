@@ -12,7 +12,7 @@ public class Flight  extends Identifiable {
     private final int capacity;
     private final int reservedSeats;
 
-    protected Flight(int id, String from, String to, LocalDate departureTime, LocalDate arrivalTime, int capacity, int reservedSeats) {
+    public Flight(int id, String from, String to, LocalDate departureTime, LocalDate arrivalTime, int capacity, int reservedSeats) {
         super(id);
         this.from = from;
         this.to = to;
