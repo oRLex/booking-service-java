@@ -8,7 +8,7 @@ public class Order extends Identifiable {
     private final Flight f;
     private final Person p;
 
-    public Order(int id, Flight f, Person p) {
+    public Order(Person p, Flight f, int id) {
         super(id);
         this.f = f;
         this.p = p;
