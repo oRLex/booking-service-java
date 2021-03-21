@@ -3,6 +3,7 @@ package flight.collection;
 import dao.FlightsDAO;
 import dao.Identifiable;
 import flight.Flight;
+import utils.RandomFlights;
 
 import java.util.HashSet;
 import java.util.Optional;
@@ -30,6 +31,16 @@ public class DaoFlightHashSet<T extends Identifiable> implements FlightsDAO<T> {
     @Override
     public Optional<T> getFlight(Flight f) {
         return Optional.empty();
+    }
+
+    @Override
+    public void create(T f) {
+            db.add(f);
+    }
+
+    @Override
+    public void create(Set<T> sf) {
+            db.addAll(sf);
     }
 
 

@@ -2,17 +2,17 @@ package flight;
 
 import dao.Identifiable;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 public class Flight  extends Identifiable {
     private final String from;
     private final String to;
-    private final LocalDate departureTime;
-    private final LocalDate arrivalTime;
+    private final LocalDateTime departureTime;
+    private final LocalDateTime arrivalTime;
     private final int capacity;
     private final int reservedSeats;
 
-    protected Flight(int id, String from, String to, LocalDate departureTime, LocalDate arrivalTime, int capacity, int reservedSeats) {
+    public Flight(int id, String from, String to, LocalDateTime departureTime, LocalDateTime arrivalTime, int capacity, int reservedSeats) {
         super(id);
         this.from = from;
         this.to = to;
@@ -30,11 +30,11 @@ public class Flight  extends Identifiable {
         return to;
     }
 
-    public LocalDate getDepartureTime() {
+    public LocalDateTime getDepartureTime() {
         return departureTime;
     }
 
-    public int getFreeSteats(){
+    public int getFreeSeats(){
         return capacity - reservedSeats;
     }
 
