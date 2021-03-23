@@ -8,8 +8,8 @@ import java.io.*;
 import java.util.*;
 
 public class Database {
-    static File booking = new File("./db","booking.bin");
-    static File flights = new File("./db","flights.bin");
+    public static File booking = new File("./db/booking.bin");
+    public static File flights = new File("./db/flights.bin");
 
     private static Set<Order> ordersList = new HashSet<>();
     private static Set<Flight> flightSet = new HashSet<>();
@@ -37,7 +37,7 @@ public class Database {
         } else {
             RandomFlights randomFlights = new RandomFlights();
             flightSet.addAll(randomFlights.generateFlights());
-            saveFile(flights, flightSet);
+//            saveFile(flights, flightSet);
         }
 
         if (booking.exists()){
@@ -45,25 +45,35 @@ public class Database {
         }
     }
 
-    private static void saveFile(File file, Set list) throws IOException{
+    public static void saveFile(File file, Set list) throws IOException{
         FileOutputStream fos = new FileOutputStream(file);
+        System.out.println(list);
         try(ObjectOutputStream oos = new ObjectOutputStream(fos)){
             for (Object element: list) {
                 oos.writeObject(element);
             }
+        } catch (Exception x){
+            System.out.println(x.getMessage());
         }
     }
 
-    private static void readFile(File file, Set list) throws IOException, ClassNotFoundException {
+    private static void readFile(File file, Set list) throws IOException{
         FileInputStream fis = new FileInputStream(file);
         try(ObjectInputStream ois = new ObjectInputStream(fis)){
             Set families= (Set) ois.readObject();
+        } catch (Exception x){
+            System.out.println(x.getMessage());
         }
     }
 
-    private static void close() throws IOException {
-        saveFile(flights, flightSet);
-        saveFile(booking, ordersList);
+    public static void close() {
+        try {
+            saveFile(flights, flightSet);
+            saveFile(booking, ordersList);
+        } catch (Exception x){
+            System.out.println(x.getMessage());
+        }
+
     }
 
 

@@ -19,9 +19,14 @@ public class FlightController {
         return flight;
     }
 
-    public String getFlight(String destination, String data, int ticketsNumber){
-        Set<Flight> flight = flightService.getFlight(destination, data, ticketsNumber);
-        return flightService.getAll(flight);
+    public Optional<String> getFlight(String destination, String data, int ticketsNumber){
+        try{
+            Set<Flight> flight = flightService.getFlight(destination, data, ticketsNumber);
+            return Optional.of(flightService.getAll(flight));
+        } catch (Exception x){
+            System.out.println("не правильные данные");
+            return Optional.empty();
+        }
     }
 
 

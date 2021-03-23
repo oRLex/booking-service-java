@@ -21,7 +21,7 @@ public class OrderController {
     }
 
     public void cancelOrder(int id){
-        orderService.cancelOrder(id);
+            orderService.cancelOrder(id);
     }
 
     public Set<Order> searchOrderUser(String name, String surname){
