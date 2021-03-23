@@ -23,4 +23,9 @@ public class Order extends Identifiable implements Serializable {
     public Person getPeron() {
         return p;
     }
+
+    @Override
+    public String toString() {
+        return String.format("Order: flight: %s, Person: %s}", f, p);
+    }
 }

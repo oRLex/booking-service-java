@@ -10,11 +10,11 @@ import order.controller.OrderController;
 import java.io.IOException;
 import java.util.Optional;
 import java.util.Scanner;
+import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class ConsoleApp {
-    static FlightService service = new FlightService();
     static Scanner scanner = new Scanner(System.in);
     static OrderController orderController = new OrderController();
     static FlightController flightController = new FlightController();
@@ -37,6 +37,7 @@ public class ConsoleApp {
     }
 
     public static int expectInt(String str, int maxValue){
+        System.out.printf(str);
         String value = expectString();
         Optional<Integer> userNum = isInt(value);
         if (!userNum.isPresent() || userNum.get()>maxValue) {
@@ -47,40 +48,40 @@ public class ConsoleApp {
     }
 
     public static int printInt(String str, int maxValue){
-        System.out.printf(str);
         int userNum = expectInt(str, maxValue);
         return userNum;
     }
 
     public static String expectString() {
-        return scanner.next();
+        return scanner.nextLine();
     }
 
     public static void showAllFlight(){
-        System.out.println(flightController.showAll());
-//        service.getAll();
+        Set<Flight> all = flightController.getAll();
+        StringBuilder strb = new StringBuilder();
+        for(Flight f: all){
+            strb.append(f);
+            strb.append("\n");
+        }
+        System.out.println(strb);
     }
 
     public static void informationAboutFlight(){
         Integer idFlight = printInt("Ведите айди рейса", 10000);
-        System.out.println(idFlight);
-//        if (idFlight)
-//        getFlight(idFlight);
+        Optional<Flight> flightByIndex = flightController.getFlightByIndex(idFlight);
+        System.out.println(flightByIndex.get());
     }
 
     public static void searchAndBooking(){
         System.out.println("Ведите место назначения (город, например: Berlin)");
-        String townTo = expectString();
+        String destination = expectString();
         System.out.println("Ведите дату (день/месяц/год, например: 11/03/2021)");
         String date = expectString();
-        System.out.println();
-//        тут должно быть вот это
-//        Integer ticketsNumber = toInt(expectStri  ng(), getFreeSteats());
         Integer ticketsNumber = expectInt("Количество человек числом (Например: 2)", 4);
-//        List<Flight> f = getFlight(townTo, date, ticketsNumber)
-//        if (f)
-
+        System.out.printf("Number of available flights \n %s", flightController.getFlight(destination,date,ticketsNumber));
         Integer numberFlight = expectInt("Ведите порядковый номер рейса", 100);
+        Optional<Flight> flightByIndex = flightController.getFlightByIndex(numberFlight);
+
         if (numberFlight == 0) return;
         for (int i =0 ; i < ticketsNumber; i++){
             System.out.println("Ведите имя");
@@ -89,9 +90,9 @@ public class ConsoleApp {
             System.out.println("Ведите фамилию");
             String surnameUser = expectString();
             System.out.println(surnameUser);
-//            orderController.addOrder(nameUser, surnameUser, fligth);
+            orderController.addOrder(nameUser, surnameUser, flightByIndex.get());
         }
-        System.out.println(townTo);
+        System.out.println(destination);
         System.out.println(date);
         System.out.println(ticketsNumber);
     }

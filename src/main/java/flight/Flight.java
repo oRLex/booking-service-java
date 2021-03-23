@@ -4,6 +4,7 @@ import dao.Identifiable;
 import utils.Airports;
 
 import java.io.Serializable;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
@@ -37,12 +38,13 @@ public class Flight extends Identifiable implements Serializable {
         return from;
     }
 
-    public Airports getTo() {
-        return to;
+    public String getTo() {
+        return to.getTitle();
     }
 
-    public LocalDateTime getDepartureTime() {
-        return departureTime;
+    public LocalDate getDepartureTime() {
+        LocalDate localDate = departureTime.toLocalDate();
+        return localDate;
     }
 
     public int getFreeSeats(){

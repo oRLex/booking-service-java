@@ -26,9 +26,7 @@ public class Database {
     static {
         try {
             init();
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (ClassNotFoundException e) {
+        } catch (IOException | ClassNotFoundException e) {
             e.printStackTrace();
         }
     }
@@ -59,10 +57,7 @@ public class Database {
     private static void readFile(File file, Set list) throws IOException, ClassNotFoundException {
         FileInputStream fis = new FileInputStream(file);
         try(ObjectInputStream ois = new ObjectInputStream(fis)){
-            Set element;
-            while (( element =(Set) ois.readObject()) != null){
-                list.add(element);
-            }
+            Set families= (Set) ois.readObject();
         }
     }
 
