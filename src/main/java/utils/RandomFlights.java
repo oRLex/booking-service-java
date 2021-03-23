@@ -7,6 +7,7 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.concurrent.ThreadLocalRandom;
 
 public class RandomFlights {
     public int randomInt(int min, int max){
@@ -15,13 +16,13 @@ public class RandomFlights {
 
     public Set<Flight> generateFlights(){
         Set<Flight> flights = new HashSet<>();
-        String from, to;
+        Airports from, to;
         LocalDateTime departureTime, arrivalTime;
         int capacity, reservedSeats;
         for (int i =0; i < 100; i++){
-            from = "Kyiv";
+            from = Airports.KBP;
             do {
-                to = generateAirport();
+                to = Airports.getRandom();
             } while (from.equals(to));
             departureTime = generateDepartureTime();
             arrivalTime = generateArrivalTime(departureTime);
@@ -33,14 +34,17 @@ public class RandomFlights {
     }
 
     public LocalDateTime generateDepartureTime(){
-        long tomorrow = LocalDate.now().plusDays(1).toEpochDay();
-        return LocalDateTime.of(LocalDate.ofEpochDay(tomorrow), LocalTime.of(randomInt(0,23),randomInt(0,59)));
+        long now = LocalDate.now().toEpochDay();
+        long daysAfter = LocalDate.now().plusDays(30).toEpochDay();
+        long randomDay = ThreadLocalRandom.current().nextLong(now, daysAfter);
+
+        return LocalDateTime.of(LocalDate.ofEpochDay(randomDay), LocalTime.of(randomInt(0,23),randomInt(0,59)));
     }
 
     public String generateAirport(){
         Airports[] values = Airports.values();
         Airports value = values[randomInt(0, values.length - 1)];
-        return value.name();
+        return String.valueOf(value);
     }
 
     public LocalDateTime generateArrivalTime(LocalDateTime departureTime){

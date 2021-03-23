@@ -2,15 +2,26 @@ package utils;
 
 public enum Airports {
 
-    LAX("Los Angeles International Airport"),
-    NRT("Tokyo Narita International Airport"),
-    HND("Tokyo Haneda Airport"),
-    LHR("London Heathrow"),
-    LGW("London Gatwick"),
-    SIN("Singapore Changi");
+    KBP ("Kyiv"),
+    LAX ("Los Angeles"),
+    NRT ("Tokyo"),
+    HND ("Tokyo"),
+    LHR ("London"),
+    LGW ("London"),
+    SIN ("Singapore");
+
+    private String title;
+
+    Airports(String title) {
+        this.title = title;
+    }
+
+    public String getTitle() {
+        return title;
+    }
 
 
-    Airports(String s) {
-
+    public static Airports getRandom() {
+        return values()[(int) (Math.random() * values().length)];
     }
 }

@@ -1,6 +1,13 @@
 package console;
 
+import dao.Database;
+import flight.Flight;
+import flight.controller.FlightController;
 import flight.service.FlightService;
+import order.Order;
+import order.controller.OrderController;
+
+import java.io.IOException;
 import java.util.Optional;
 import java.util.Scanner;
 import java.util.regex.Matcher;
@@ -9,6 +16,11 @@ import java.util.regex.Pattern;
 public class ConsoleApp {
     static FlightService service = new FlightService();
     static Scanner scanner = new Scanner(System.in);
+    static OrderController orderController = new OrderController();
+    static FlightController flightController = new FlightController();
+
+    public ConsoleApp() throws IOException, ClassNotFoundException {
+    }
 
     public static Integer toInt(String a){
         return Integer.parseInt(a);
@@ -45,7 +57,7 @@ public class ConsoleApp {
     }
 
     public static void showAllFlight(){
-        System.out.println("getAll");
+        System.out.println(flightController.showAll());
 //        service.getAll();
     }
 
@@ -77,7 +89,7 @@ public class ConsoleApp {
             System.out.println("Ведите фамилию");
             String surnameUser = expectString();
             System.out.println(surnameUser);
-//            saveOrder()
+//            orderController.addOrder(nameUser, surnameUser, fligth);
         }
         System.out.println(townTo);
         System.out.println(date);
@@ -89,7 +101,7 @@ public class ConsoleApp {
         Integer idFlight = expectInt("Ведите айди рейса", 1000);
 //        getFlight(idFlight);
 //        if (Optional.empty()) return;
-//        cancelOrder()
+        orderController.cancelOrder(idFlight);
     }
 
     public static void myFlights(){
@@ -97,7 +109,7 @@ public class ConsoleApp {
         String nameUser = expectString();
         System.out.println("Ведите фамилию");
         String surnameUser = expectString();
-//        searchOrder(nameUser, surnameUser);
+        System.out.println(orderController.searchOrderUser(nameUser, surnameUser));
     }
 
     public static String showMenu(){

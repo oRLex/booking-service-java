@@ -4,11 +4,13 @@ import dao.Identifiable;
 import flight.Flight;
 import person.Person;
 
-public class Order extends Identifiable {
+import java.io.Serializable;
+
+public class Order extends Identifiable implements Serializable {
     private final Flight f;
     private final Person p;
 
-    public Order(int id, Flight f, Person p) {
+    public Order(Person p, Flight f, int id) {
         super(id);
         this.f = f;
         this.p = p;
