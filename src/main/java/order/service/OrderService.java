@@ -1,31 +1,33 @@
 package order.service;
 
-import dao.BookingDAO;
-import dao.Identifiable;
 
-import java.util.HashSet;
-import java.util.Optional;
-import java.util.Set;
+import flight.Flight;
+import order.Order;
+import order.collection.DaoOrderHashSet;
+import person.Person;
+import java.util.List;
+import java.util.stream.Collectors;
 
-public class OrderService<T extends Identifiable> implements BookingDAO<T> {
-    private final Set<T> db = new HashSet<>();
+public class OrderService {
+   public final DaoOrderHashSet<Order> db = new DaoOrderHashSet<>();
 
-    @Override
-    public void saveOrder(T o) {
-        db.add(o);
+   public void addOrder(String name, String surname, Flight flight){
+        Person person = new Person(name, surname);
+        Order order = new Order(person, flight, 1);
+        db.saveOrder(order);
     }
 
-    @Override
-    public Set<T> searchOrder() {
-        if (!db.isEmpty()) return db;
-        else return null;
+    public List<Order> getAllOrders(){
+      return db.searchOrder();
     }
 
-    @Override
-    public void cancelOrder(int id) {
-        Optional<T> gotFlight = db.stream().filter(x -> x.id == id).findFirst();
-        if (gotFlight.isPresent()) {
-            db.remove(gotFlight);
-        }
+    public void cancelOrder(int id){
+        db.cancelOrder(id);
+    }
+
+    public List<Order> searchOrderUser(String name, String surname){
+       return db.searchOrder().stream()
+                .filter(x -> x.getPeron().name == name && x.getPeron().surname == surname)
+                .collect(Collectors.toList());
     }
 }

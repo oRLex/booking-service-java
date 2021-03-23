@@ -2,22 +2,25 @@ package order.collection;
 
 import dao.BookingDAO;
 import dao.Identifiable;
-import order.Order;
+import order.Database;
 
+import java.io.IOException;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
-public class DaoOrderHashSet<T extends Identifiable> implements BookingDAO<T> {
-    private final Set<T> db = new HashSet<>();
 
+public class DaoOrderHashSet<T extends Identifiable> implements BookingDAO<T> {
+    public final List<T> db = (List<T>) Database.getOrdersList();
+    
     @Override
     public void saveOrder(T o) {
         db.add(o);
     }
 
     @Override
-    public Set<T> searchOrder() {
+    public List<T> searchOrder() {
         if (!db.isEmpty()) return db;
         else return null;
     }
@@ -29,5 +32,6 @@ public class DaoOrderHashSet<T extends Identifiable> implements BookingDAO<T> {
             db.remove(gotFlight);
         }
     }
+
 
 }

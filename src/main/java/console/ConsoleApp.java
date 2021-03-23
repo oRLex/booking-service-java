@@ -92,7 +92,7 @@ public class ConsoleApp {
         Integer idFlight = expectInt("Ведите айди рейса", 1000);
 //        getFlight(idFlight);
 //        if (Optional.empty()) return;
-        orderController.cancelOrder(idFlight);
+        orderController.service.cancelOrder(idFlight);
     }
 
     public static void myFlights(){
@@ -100,7 +100,7 @@ public class ConsoleApp {
         String nameUser = expectString();
         System.out.println("Ведите фамилию");
         String surnameUser = expectString();
-        System.out.println(orderController.searchOrderUser(nameUser, surnameUser));
+        System.out.println(orderController.service.searchOrderUser(nameUser, surnameUser));
     }
 
     public static String showMenu(){
@@ -114,8 +114,8 @@ public class ConsoleApp {
 
 
     public static void main(String[] args) {
-
         boolean flag = true;
+//        saveOrderInFile();
         do {
             System.out.println(showMenu());
             Integer numberMenu = printInt("Ведите цифру от 1 до 6 \n", 6);
@@ -136,6 +136,7 @@ public class ConsoleApp {
                     myFlights();
                     break;
                 case 6:
+//                    saveFile()
                     flag = false;
                     return;
             }

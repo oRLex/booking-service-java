@@ -2,10 +2,11 @@ package dao;
 
 import order.Order;
 
+import java.util.List;
 import java.util.Set;
 
-public interface BookingDAO<T extends Identifiable> {
+public interface BookingDAO<T> {
     void saveOrder(T o);
-    Set<T> searchOrder();
+    List<T> searchOrder();
     void cancelOrder(int id);
 }

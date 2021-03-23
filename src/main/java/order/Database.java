@@ -1,20 +1,23 @@
+package order;
+
 import dao.Identifiable;
 
 import java.io.*;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashSet;
 import java.util.List;
+import java.util.stream.Collector;
 
 public class Database {
     static File booking = new File("db/booking.bin");
+    private static List<Identifiable> ordersList = new ArrayList<>();
 
-    static List<Identifiable> ordersList = new ArrayList<>();
-
-    public void saveOrderInFile() throws IOException, ClassNotFoundException{
-        if (booking.exists()){
-            readFile(booking , ordersList);
-        } else {
-            saveFile(booking, ordersList);
-        }
+    public static List<Identifiable> getOrdersList() throws IOException, ClassNotFoundException {
+            if (booking.exists()){
+                readFile(booking, ordersList);
+            }
+            return ordersList;
     }
 
     private static void saveFile(File file, List<Identifiable> list) throws IOException{
@@ -31,7 +34,7 @@ public class Database {
         try(ObjectInputStream ois = new ObjectInputStream(fis)){
             Identifiable element;
             while (( element = (Identifiable) ois.readObject()) != null){
-                list.add(element);
+                list.add((Identifiable) element);
             }
         }
     }

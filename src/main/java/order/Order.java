@@ -1,5 +1,4 @@
 package order;
-
 import dao.Identifiable;
 import flight.Flight;
 import person.Person;
