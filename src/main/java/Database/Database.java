@@ -1,5 +1,6 @@
-package dao;
+package Database;
 
+import dao.Identifiable;
 import flight.Flight;
 import order.Order;
 import utils.RandomFlights;
@@ -8,8 +9,8 @@ import java.io.*;
 import java.util.*;
 
 public class Database {
-    public static File booking = new File("./db/booking.bin");
-    public static File flights = new File("./db/flights.bin");
+    public static File booking = new File("db/booking.bin");
+    public static File flights = new File("db/flights.bin");
 
     private static Set<Order> ordersList = new HashSet<>();
     private static Set<Flight> flightSet = new HashSet<>();
@@ -37,7 +38,7 @@ public class Database {
         } else {
             RandomFlights randomFlights = new RandomFlights();
             flightSet.addAll(randomFlights.generateFlights());
-//            saveFile(flights, flightSet);
+            saveFile(flights, flightSet);
         }
 
         if (booking.exists()){
@@ -60,7 +61,12 @@ public class Database {
     private static void readFile(File file, Set list) throws IOException{
         FileInputStream fis = new FileInputStream(file);
         try(ObjectInputStream ois = new ObjectInputStream(fis)){
-            Set families= (Set) ois.readObject();
+            while (true){
+                Identifiable families = (Identifiable) ois.readObject();
+               list.add(families);
+            }
+
+
         } catch (Exception x){
             System.out.println(x.getMessage());
         }
@@ -75,6 +81,35 @@ public class Database {
         }
 
     }
+
+//    public static void main(String[] args) throws FileNotFoundException {
+//        File f = new File("db/flights.bin");
+//        FileInputStream fis = new FileInputStream(f);
+//        boolean flag = true;
+//
+//        try(ObjectInputStream ois = new ObjectInputStream(fis)){
+//
+//            while (true){
+//                Identifiable families = (Identifiable) ois.readObject();
+//                System.out.println(families);
+//            }
+//
+//        } catch (Exception x) {
+//
+//        }
+
+//        FileOutputStream fos = new FileOutputStream(f);
+//        RandomFlights randomFlights = new RandomFlights();
+//        Set<Flight> flights = randomFlights.generateFlights();
+//        try(ObjectOutputStream oos = new ObjectOutputStream(fos)){
+//            for (Object element: flights) {
+//                oos.writeObject(element);
+//            }
+//        } catch (Exception x){
+//            System.out.println(x.getMessage());
+//        }
+
+//    }
 
 
 }

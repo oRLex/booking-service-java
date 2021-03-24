@@ -1,18 +1,14 @@
 package console;
 
-import dao.Database;
 import flight.Flight;
 import flight.controller.FlightController;
-import flight.service.FlightService;
-import order.Order;
 import order.controller.OrderController;
 
 import java.io.IOException;
+import Database.Database;
 import java.util.Optional;
 import java.util.Scanner;
 import java.util.Set;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 public class ConsoleApp {
     static Scanner scanner = new Scanner(System.in);
@@ -145,7 +141,6 @@ public class ConsoleApp {
                     myFlights();
                     break;
                 case 6:
-//                    saveFile()
                     flag = false;
                     Database.close();
                     return;

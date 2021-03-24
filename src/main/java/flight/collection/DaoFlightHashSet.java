@@ -1,10 +1,9 @@
 package flight.collection;
 
-import dao.Database;
 import dao.FlightsDAO;
 import flight.Flight;
+import Database.Database;
 
-import java.io.IOException;
 import java.util.Optional;
 import java.util.Set;
 
