@@ -1,18 +1,30 @@
 package flight;
 
 import dao.Identifiable;
+import utils.Airports;
 
+import java.io.Serializable;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
-public class Flight  extends Identifiable {
-    private final String from;
-    private final String to;
-    private final LocalDate departureTime;
-    private final LocalDate arrivalTime;
+public class Flight extends Identifiable implements Serializable {
+    static DateTimeFormatter formatter = DateTimeFormatter.ISO_DATE_TIME;
+
+    public static String prettyDate(LocalDateTime t){
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+        String formattedDateTime = t.format(formatter);
+        return formattedDateTime;
+    }
+
+    private final Airports from;
+    private final Airports to;
+    private final LocalDateTime departureTime;
+    private final LocalDateTime arrivalTime;
     private final int capacity;
     private final int reservedSeats;
 
-    public Flight(int id, String from, String to, LocalDate departureTime, LocalDate arrivalTime, int capacity, int reservedSeats) {
+    public Flight(int id, Airports from, Airports to, LocalDateTime departureTime, LocalDateTime arrivalTime, int capacity, int reservedSeats) {
         super(id);
         this.from = from;
         this.to = to;
@@ -22,20 +34,33 @@ public class Flight  extends Identifiable {
         this.reservedSeats = reservedSeats;
     }
 
-    public String getFrom() {
+    public Airports getFrom() {
         return from;
     }
 
     public String getTo() {
-        return to;
+        return to.getTitle();
     }
 
     public LocalDate getDepartureTime() {
-        return departureTime;
+        LocalDate localDate = departureTime.toLocalDate();
+        return localDate;
     }
 
-    public int getFreeSteats(){
+    public int getFreeSeats(){
         return capacity - reservedSeats;
     }
 
+
+    @Override
+    public String toString() {
+        return String.format("ID: %d From: '%s', To: '%s', Departure time: %s, Arrival time: %s, capacity: %d, Reserved seats: %d",
+                id,
+                from.getTitle(),
+                to.getTitle(),
+                prettyDate(departureTime),
+                prettyDate(arrivalTime),
+                capacity,
+                reservedSeats);
+    }
 }

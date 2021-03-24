@@ -1,33 +1,50 @@
 package order.service;
-
-
-import flight.Flight;
+import dao.BookingDAO;
+import dao.FlightsDAO;
+import dao.Identifiable;
+import exeption.CustomException;
+import flight.collection.DaoFlightHashSet;
 import order.Order;
 import order.collection.DaoOrderHashSet;
-import person.Person;
-import java.util.List;
+
+import java.sql.SQLOutput;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 public class OrderService {
-   public final DaoOrderHashSet<Order> db = new DaoOrderHashSet<>();
+    private BookingDAO dao = new DaoOrderHashSet();
+    public OrderService(){
 
-   public void addOrder(String name, String surname, Flight flight){
-        Person person = new Person(name, surname);
-        Order order = new Order(person, flight, 1);
-        db.saveOrder(order);
     }
 
-    public List<Order> getAllOrders(){
-      return db.searchOrder();
+    public void saveOrder(Order o) {
+        dao.saveOrder(o);
     }
 
-    public void cancelOrder(int id){
-        db.cancelOrder(id);
+    public  Set<Order>  searchOrder(String name, String surname) {
+        Set<Order> orders = dao.getAll();
+        try{
+            return orders.stream()
+                    .filter(x -> x.getPeron().name.equalsIgnoreCase(name) && x.getPeron().surname.equalsIgnoreCase(surname))
+                    .collect(Collectors.toSet());
+        } catch (Exception x){
+            return Collections.emptySet();
+        }
     }
 
-    public List<Order> searchOrderUser(String name, String surname){
-       return db.searchOrder().stream()
-                .filter(x -> x.getPeron().name == name && x.getPeron().surname == surname)
-                .collect(Collectors.toList());
+    public void cancelOrder(int id) {
+        Set<Order> orders = dao.getAll();
+        try{
+            Optional<Order> gotFlight = orders.stream().filter(x -> x.id == id).findFirst();
+            if (gotFlight.isPresent()) {
+                dao.cancelOrder(gotFlight.get().id);
+                return;
+            }
+        } catch (Exception x){
+            System.out.println("не правильные данные");
+        }
     }
 }

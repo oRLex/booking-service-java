@@ -8,4 +8,9 @@ public class Person {
         this.name = name;
         this.surname = surname;
     }
+
+    @Override
+    public String toString() {
+        return String.format("Person{name='%s', surname='%s'}", name, surname);
+    }
 }
