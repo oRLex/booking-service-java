@@ -1,10 +1,11 @@
 package order;
-
 import dao.Identifiable;
 import flight.Flight;
 import person.Person;
 
-public class Order extends Identifiable {
+import java.io.Serializable;
+
+public class Order extends Identifiable implements Serializable {
     private final Flight f;
     private final Person p;
 
@@ -20,5 +21,10 @@ public class Order extends Identifiable {
 
     public Person getPeron() {
         return p;
+    }
+
+    @Override
+    public String toString() {
+        return String.format("Order: flight: %s, Person: %s}", f, p);
     }
 }

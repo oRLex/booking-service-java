@@ -1,31 +1,50 @@
 package order.service;
-
 import dao.BookingDAO;
+import dao.FlightsDAO;
 import dao.Identifiable;
+import exeption.CustomException;
+import flight.collection.DaoFlightHashSet;
+import order.Order;
+import order.collection.DaoOrderHashSet;
 
+import java.sql.SQLOutput;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
+import java.util.stream.Collectors;
 
-public class OrderService<T extends Identifiable> implements BookingDAO<T> {
-    private final Set<T> db = new HashSet<>();
+public class OrderService {
+    private BookingDAO dao = new DaoOrderHashSet();
+    public OrderService(){
 
-    @Override
-    public void saveOrder(T o) {
-        db.add(o);
     }
 
-    @Override
-    public Set<T> searchOrder() {
-        if (!db.isEmpty()) return db;
-        else return null;
+    public void saveOrder(Order o) {
+        dao.saveOrder(o);
     }
 
-    @Override
+    public  Set<Order>  searchOrder(String name, String surname) {
+        Set<Order> orders = dao.getAll();
+        try{
+            return orders.stream()
+                    .filter(x -> x.getPeron().name.equalsIgnoreCase(name) && x.getPeron().surname.equalsIgnoreCase(surname))
+                    .collect(Collectors.toSet());
+        } catch (Exception x){
+            return Collections.emptySet();
+        }
+    }
+
     public void cancelOrder(int id) {
-        Optional<T> gotFlight = db.stream().filter(x -> x.id == id).findFirst();
-        if (gotFlight.isPresent()) {
-            db.remove(gotFlight);
+        Set<Order> orders = dao.getAll();
+        try{
+            Optional<Order> gotFlight = orders.stream().filter(x -> x.id == id).findFirst();
+            if (gotFlight.isPresent()) {
+                dao.cancelOrder(gotFlight.get().id);
+                return;
+            }
+        } catch (Exception x){
+            System.out.println("не правильные данные");
         }
     }
 }

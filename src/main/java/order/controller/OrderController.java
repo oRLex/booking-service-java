@@ -6,11 +6,11 @@ import order.service.OrderService;
 import person.Person;
 
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 public class OrderController {
-    public final OrderService<Order> orderService =new OrderService<>();
-
+    public final OrderService orderService = new OrderService();
 
     public OrderController() {}
 
@@ -21,15 +21,12 @@ public class OrderController {
     }
 
     public void cancelOrder(int id){
-        orderService.cancelOrder(id);
+            orderService.cancelOrder(id);
     }
 
-    public List<Order> searchOrderUser(String name, String surname){
-       return orderService.searchOrder().stream()
-                .filter(x -> x.getPeron().name == name && x.getPeron().surname == surname)
-                .collect(Collectors.toList());
+    public Set<Order> searchOrderUser(String name, String surname){
+        Set<Order> orders = orderService.searchOrder(name, surname);
+        return orders;
     }
-
-
 
 }
