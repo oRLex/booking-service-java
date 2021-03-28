@@ -120,7 +120,6 @@ public class ConsoleApp {
 
     public static void main(String[] args) {
         boolean flag = true;
-//        saveOrderInFile();
         do {
             System.out.println(showMenu());
             Integer numberMenu = printInt("Ведите цифру от 1 до 6 \n", 6);
