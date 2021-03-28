@@ -46,9 +46,8 @@ public class Database {
         }
     }
 
-    public static void saveFile(File file, Set list) throws IOException{
+    public static void saveFile(File file, Set list) throws IOException {
         FileOutputStream fos = new FileOutputStream(file);
-        System.out.println(list);
         try(ObjectOutputStream oos = new ObjectOutputStream(fos)){
             for (Object element: list) {
                 oos.writeObject(element);
@@ -65,8 +64,6 @@ public class Database {
                 Identifiable families = (Identifiable) ois.readObject();
                list.add(families);
             }
-
-
         } catch (Exception x){
             System.out.println(x.getMessage());
         }
@@ -79,37 +76,7 @@ public class Database {
         } catch (Exception x){
             System.out.println(x.getMessage());
         }
-
     }
-
-//    public static void main(String[] args) throws FileNotFoundException {
-//        File f = new File("db/flights.bin");
-//        FileInputStream fis = new FileInputStream(f);
-//        boolean flag = true;
-//
-//        try(ObjectInputStream ois = new ObjectInputStream(fis)){
-//
-//            while (true){
-//                Identifiable families = (Identifiable) ois.readObject();
-//                System.out.println(families);
-//            }
-//
-//        } catch (Exception x) {
-//
-//        }
-
-//        FileOutputStream fos = new FileOutputStream(f);
-//        RandomFlights randomFlights = new RandomFlights();
-//        Set<Flight> flights = randomFlights.generateFlights();
-//        try(ObjectOutputStream oos = new ObjectOutputStream(fos)){
-//            for (Object element: flights) {
-//                oos.writeObject(element);
-//            }
-//        } catch (Exception x){
-//            System.out.println(x.getMessage());
-//        }
-
-//    }
 
 
 }

@@ -3,8 +3,6 @@ package console;
 import flight.Flight;
 import flight.controller.FlightController;
 import order.controller.OrderController;
-
-import java.io.IOException;
 import Database.Database;
 import java.util.Optional;
 import java.util.Scanner;
@@ -15,8 +13,6 @@ public class ConsoleApp {
     static OrderController orderController = new OrderController();
     static FlightController flightController = new FlightController();
 
-    public ConsoleApp() throws IOException, ClassNotFoundException {
-    }
 
     public static Integer toInt(String a){
         return Integer.parseInt(a);
@@ -36,7 +32,6 @@ public class ConsoleApp {
         String value = expectString();
         Optional<Integer> userNum = isInt(value);
         if (!userNum.isPresent() || userNum.get() > maxValue) {
-            System.out.println(userNum);
             System.out.println("Веели неправильное значение");
             return printInt(str, maxValue);
         }
@@ -65,7 +60,12 @@ public class ConsoleApp {
     public static void informationAboutFlight(){
         Integer idFlight = printInt("Ведите айди рейса\n", 1000);
         Optional<Flight> flightByIndex = flightController.getFlightByIndex(idFlight);
+        if (!flightByIndex.isPresent()) {
+            System.out.println("Рейс не найден");
+            informationAboutFlight();
+        }
         System.out.println(flightByIndex.get());
+        return;
     }
 
     public static void searchAndBooking(){
@@ -76,27 +76,27 @@ public class ConsoleApp {
         Integer ticketsNumber = expectInt("Количество человек числом (Например: 2)", 4);
         Optional<String> allFligth = flightController.getFlight(destination,date,ticketsNumber);
         if (!allFligth.isPresent()) return;
-        System.out.printf("Number of available flights \n %s", allFligth.isPresent());
-        Integer numberFlight = expectInt("Ведите порядковый номер рейса", 100);
+        System.out.printf("Number of available flights \n %s", allFligth.get());
+        Integer numberFlight = expectInt("Ведите id рейса\n", 100);
         Optional<Flight> flightByIndex = flightController.getFlightByIndex(numberFlight);
 
         if (numberFlight == 0) return;
         for (int i =0 ; i < ticketsNumber; i++){
             System.out.println("Ведите имя");
             String nameUser = expectString();
-            System.out.println(nameUser);
             System.out.println("Ведите фамилию");
             String surnameUser = expectString();
-            System.out.println(surnameUser);
             orderController.addOrder(nameUser, surnameUser, flightByIndex.get());
         }
-        System.out.println(destination);
-        System.out.println(date);
-        System.out.println(ticketsNumber);
     }
 
     public static void deleteOrder(){
-        Integer idFlight = expectInt("Ведите айди бронирования", 99999);
+        if(orderController.getAll()==null) {
+            System.out.println("no items");
+            return;
+        }
+        else System.out.println(orderController.getAll());
+        Integer idFlight = expectInt("Ведите порядковій номер", 99999);
         orderController.cancelOrder(idFlight);
     }
 
@@ -110,7 +110,7 @@ public class ConsoleApp {
 
     public static String showMenu(){
        return String.format("1. Онлайн-табло.\n" +
-                "2.Посмотреть информацию о рейсе \n" +
+                "2. Посмотреть информацию о рейсе \n" +
                 "3. Поиск и бронировка рейса. \n" +
                 "4. Отменить бронирование. \n" +
                 "5. Мои рейсы. \n" +
@@ -118,7 +118,7 @@ public class ConsoleApp {
     }
 
 
-    public static void main(String[] args) {
+    public void startApp() {
         boolean flag = true;
         do {
             System.out.println(showMenu());

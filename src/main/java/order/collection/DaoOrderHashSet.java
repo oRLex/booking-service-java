@@ -21,16 +21,12 @@ public class DaoOrderHashSet implements BookingDAO<Order> {
 
     @Override
     public Set<Order> getAll() {
-        if (!db.isEmpty()) return db;
-        else return null;
+        return db;
     }
 
     @Override
-    public void cancelOrder(int id) {
-        Optional<Order> gotFlight = db.stream().filter(x -> x.id == id).findFirst();
-        if (gotFlight.isPresent()) {
-            db.remove(gotFlight);
-        }
+    public void cancelOrder(Order order) {
+        db.remove(order);
     }
 
 
